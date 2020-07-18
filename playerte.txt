@@ -1,0 +1,103 @@
+mysql> select * from team;
++----+-----------+-------------+
+| id | name      | foundeddate |
++----+-----------+-------------+
+|  1 | ManU      | 1878-01-01  |
+|  2 | Liverpool | 1892-06-03  |
+|  3 | Chelsea   | 1905-03-10  |
+|  4 | Arsenal   | 1886-03-10  |
++----+-----------+-------------+
+4 rows in set (0.00 sec)
+
+mysql> select * from player;
++-----+--------------------+---------+------+--------+--------+--------+
+| pid | name               | jersyno | age  | salary | height | teamid |
++-----+--------------------+---------+------+--------+--------+--------+
+|   1 | Fred               |      17 |   27 |   1000 |      2 |      1 |
+|   2 | Brandon Williams   |      53 |   19 |   2000 |      2 |      1 |
+|   3 | Scott Mc Tominay   |      39 |   23 |   2500 |      2 |      1 |
+|   4 | Mohamed Salah      |      11 |   28 |   1800 |      2 |      2 |
+|   5 | Adam Lallana       |      20 |   32 |   1500 |      2 |      2 |
+|   6 | Hakim Ziyech       |       7 |   27 |   1500 |      2 |      3 |
+|   7 | Christian Pulisic  |      22 |   21 |   1600 |      2 |      3 |
+|   8 | Billy Clifford     |      47 |   19 |   1700 |      2 |      3 |
+|  10 | William Saliba     |       4 |   19 |   1700 |      2 |      4 |
+|  11 | Matthew Ryan Macey |      33 |   25 |   1900 |      2 |      4 |
+|  12 | Matteo Guendouzi   |      29 |   21 |   2000 |      2 |      4 |
++-----+--------------------+---------+------+--------+--------+--------+
+11 rows in set (0.00 sec)
+mysql> select name,min(salary) from player;
++------+-------------+
+| name | min(salary) |
++------+-------------+
+| Fred |        1000 |
++------+-------------+
+1 row in set (0.05 sec)
+mysql> select max(salary) from player;
++-------------+
+| max(salary) |
++-------------+
+|        2500 |
++-------------+
+1 row in set (0.00 sec)
+mysql> select * from player where height<5;
++-----+--------------------+---------+------+--------+--------+--------+
+| pid | name               | jersyno | age  | salary | height | teamid |
++-----+--------------------+---------+------+--------+--------+--------+
+|   1 | Fred               |      17 |   27 |   1000 |      2 |      1 |
+|   2 | Brandon Williams   |      53 |   19 |   2000 |      2 |      1 |
+|   3 | Scott Mc Tominay   |      39 |   23 |   2500 |      2 |      1 |
+|   4 | Mohamed Salah      |      11 |   28 |   1800 |      2 |      2 |
+|   5 | Adam Lallana       |      20 |   32 |   1500 |      2 |      2 |
+|   6 | Hakim Ziyech       |       7 |   27 |   1500 |      2 |      3 |
+|   7 | Christian Pulisic  |      22 |   21 |   1600 |      2 |      3 |
+|   8 | Billy Clifford     |      47 |   19 |   1700 |      2 |      3 |
+|  10 | William Saliba     |       4 |   19 |   1700 |      2 |      4 |
+|  11 | Matthew Ryan Macey |      33 |   25 |   1900 |      2 |      4 |
+|  12 | Matteo Guendouzi   |      29 |   21 |   2000 |      2 |      4 |
++-----+--------------------+---------+------+--------+--------+--------+
+11 rows in set (0.00 sec)
+
+mysql> select * from player where age>30 and salary>1000;
++-----+--------------+---------+------+--------+--------+--------+
+| pid | name         | jersyno | age  | salary | height | teamid |
++-----+--------------+---------+------+--------+--------+--------+
+|   5 | Adam Lallana |      20 |   32 |   1500 |      2 |      2 |
++-----+--------------+---------+------+--------+--------+--------+
+1 row in set (0.00 sec)
+mysql> select name,(select sum(salary) from player where player.teamid=team.id)as salary from team;
++-----------+--------+
+| name      | salary |
++-----------+--------+
+| ManU      |   5500 |
+| Liverpool |   3300 |
+| Chelsea   |   4800 |
+| Arsenal   |   5600 |
++-----------+--------+
+4 rows in set (0.00 sec)
+
+mysql> select name,(select avg(salary) from player where player.teamid=team.id)as salary from team;
++-----------+-----------+
+| name      | salary    |
++-----------+-----------+
+| ManU      | 1833.3333 |
+| Liverpool | 1650.0000 |
+| Chelsea   | 1600.0000 |
+| Arsenal   | 1866.6667 |
++-----------+-----------+
+4 rows in set (0.00 sec)
+mysql> select name,salary from player where salary in(select min(salary) from player);
++------+--------+
+| name | salary |
++------+--------+
+| Fred |   1000 |
++------+--------+
+1 row in set (0.00 sec)
+
+mysql> select name,salary from player where salary in(select max(salary) from player);
++------------------+--------+
+| name             | salary |
++------------------+--------+
+| Scott Mc Tominay |   2500 |
++------------------+--------+
+1 row in set (0.00 sec)
