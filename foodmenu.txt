@@ -143,4 +143,67 @@ mysql> select price from food order by price asc;
 |  8000 |
 +-------+
 7 rows in set (0.00 sec)
+mysql> select * from orders;
++---------+------------+------+-------+-------------+---------+
+| orderid | sale_date  | qty  | price | total_price | food_id |
++---------+------------+------+-------+-------------+---------+
+|       1 | 2020-07-01 |   10 |  1500 |       15000 |       1 |
+|       2 | 2020-07-02 |   10 |  2600 |       26000 |       2 |
+|       3 | 2020-07-03 |    2 |  1500 |        3000 |       3 |
+|       4 | 2020-07-04 |    5 |  4500 |       22500 |       4 |
+|       5 | 2020-07-05 |    2 |  5000 |       10000 |       5 |
+|       6 | 2020-07-06 |    3 |  7000 |       21000 |       6 |
+|       7 | 2020-07-07 |   10 |  8000 |       80000 |       7 |
++---------+------------+------+-------+-------------+---------+
+7 rows in set (0.00 sec)
+mysql> select name,total_price from food,orders where total_price in(select max(total_price)from orders) and food.food_id=orders.food_id;
++----------------+-------------+
+| name           | total_price |
++----------------+-------------+
+| Rib beef steak |       80000 |
++----------------+-------------+
+1 row in set (0.08 sec)
+
+mysql> select name,total_price from food,orders where total_price in(select min(total_price)from orders) and food.food_id=orders.food_id;
++------------+-------------+
+| name       | total_price |
++------------+-------------+
+| Milk shake |        3000 |
++------------+-------------+
+1 row in set (0.00 sec)
+mysql> select sale_date,sum(total_price) from orders group by sale_date;
++------------+------------------+
+| sale_date  | sum(total_price) |
++------------+------------------+
+| 2020-07-01 |            15000 |
+| 2020-07-02 |            26000 |
+| 2020-07-03 |             3000 |
+| 2020-07-04 |            22500 |
+| 2020-07-05 |            10000 |
+| 2020-07-06 |            21000 |
+| 2020-07-07 |            80000 |
++------------+------------------+
+7 rows in set (0.00 sec)
+
+
+
+
+mysql> select sum(total_price) from orders where sale_date between '2020-7-1' and '2020-7-5';
++------------------+
+| sum(total_price) |
++------------------+
+|            76500 |
++------------------+
+1 row in set (0.06 sec)
+
+
+
+
+
+
+
+
+
+
+
 
